@@ -1,13 +1,15 @@
-import numpy as np
 import cv2
-import math
-def color(imgSize):
-    cornerSize = int(math.floor(imgSize/8))
-    img = np.ones((imgSize,imgSize,3));
-    img[:cornerSize, :cornerSize] = (0,0,1);
-    img[:cornerSize:, -cornerSize:] = (0,1,0);
-    img[-cornerSize:, :cornerSize] = (1,0,0);
-    img[-cornerSize:, -cornerSize:] = (0,0,0);
-    cv2.imshow('img',img)
-    cv2.waitKey(0)
-color(300);
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')  
+image = cv2.imread('C://Users//DERANGULA ASRITHA//OneDrive//Documents//Pictures//y.jpg')
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+for (x, y, w, h) in faces:
+    roi_gray = gray_image[y:y+h, x:x+w]
+    roi_color = image[y:y+h, x:x+w]
+    eyes = eye_cascade.detectMultiScale(roi_gray)
+    for (ex, ey, ew, eh) in eyes:
+        cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2)
+cv2.imshow('Eye Detection Result', image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
