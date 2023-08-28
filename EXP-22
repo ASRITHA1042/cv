@@ -1,0 +1,8 @@
+import cv2
+img = cv2.imread("C://Users//DERANGULA ASRITHA//OneDrive//Documents//Pictures//o.jpg")
+bg_sub=cv2.createBackgroundSubtractorMOG2()
+fg_mask=bg_sub.apply(img)
+cv2.imshow("original image",img)
+cv2.imshow("foreground mask",fg_mask)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
